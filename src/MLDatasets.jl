@@ -2,7 +2,6 @@ module MLDatasets
 
 using FixedPointNumbers: length
 using ColorTypes: length
-using Requires
 using DelimitedFiles: readdlm
 using FixedPointNumbers, ColorTypes
 using Pickle
@@ -40,9 +39,12 @@ include("Mutagenesis/Mutagenesis.jl")
 include("Titanic/Titanic.jl")
 
 # Vision
+include("datasets_vision/mnist_reader/MNISTReader.jl")
+include("datasets_vision/mnist.jl")
+export MNIST
+
 include("CIFAR10/CIFAR10.jl")
 include("CIFAR100/CIFAR100.jl")
-include("MNIST/MNIST.jl")
 include("FashionMNIST/FashionMNIST.jl")
 include("SVHN2/SVHN2.jl")
 include("EMNIST/EMNIST.jl")
@@ -63,13 +65,12 @@ include("OGBDataset/OGBDataset.jl")
 include("PolBlogs/PolBlogs.jl")
 
 function __init__()
-    # initialize optional dependencies
-    @require ImageCore="a09fc81d-aa75-5fe9-8630-4744c3626534" begin
-        global __images_supported__ = true
-    end
-
+    # misc
     __init__tudataset()
     __init__ogbdataset()
+
+    # vision
+    __init__mnist()
 end
 
 end
